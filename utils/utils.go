@@ -6,36 +6,36 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	uuid "github.com/satori/go.uuid"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-	"fmt"
 	"time"
 )
 
-func IsStringEmpty(str string) bool {
-	return strings.Trim(str, " ") == ""
-}
-
-func PrintErr(functionName string, msg ...interface{}) {
-	fmt.Println(functionName, msg)
+func Hmac(key string, data string) string {
+	hmacHash := hmac.New(md5.New, []byte(key))
+	hmacHash.Write([]byte(data))
+	return hex.EncodeToString(hmacHash.Sum([]byte("")))
 }
 
 func PrintCallErr(functionName string, callName string, err error) {
 	fmt.Println(functionName, callName+"返回失败", err)
 }
 
+func PrintErr(functionName string, msg ...interface{}) {
+	fmt.Println(functionName, msg)
+}
+
+func IsStringEmpty(str string) bool {
+	return strings.Trim(str, " ") == ""
+}
+
 func GetUUID() string {
 	u := uuid.NewV4()
 	return strings.ReplaceAll(u.String(),"-","")
-}
-
-func GetMd5(data string) string {
-	hmacHash := hmac.New(md5.New, []byte("cappuccino*?.><wxb?'123"))
-	hmacHash.Write([]byte(data))
-	return hex.EncodeToString(hmacHash.Sum([]byte("")))
 }
 
 func PathExists(path string) bool {
@@ -56,6 +56,7 @@ func Base64ToImage(imageBase64 string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return image, nil
 }
 
@@ -82,7 +83,6 @@ func GetDirFiles(dir string) ([]string, error) {
 
 	return filesRet, nil
 }
-
 
 func LoadOrStoreConfig(filePath string, defaultData interface{}) error {
 	_, err := os.Stat(filePath)
@@ -111,6 +111,6 @@ func LoadOrStoreConfig(filePath string, defaultData interface{}) error {
 	return json.NewDecoder(file).Decode(defaultData)
 }
 
-func GetCurrentTime() string {
-	return time.Now().Format("2006-01-02 15:04:05")
+func GetCurrentTimeStamp() int64 {
+	return time.Now().UnixNano() / 1e6
 }

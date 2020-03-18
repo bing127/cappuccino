@@ -1,13 +1,10 @@
 package middleware
 
 import (
-	"cappuccino/config"
-	"cappuccino/db"
-	"cappuccino/utils/apiRequest"
+	"cappuccino/utils"
 	"errors"
 	"net/http"
 	"time"
-
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +14,7 @@ func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			c.JSON(http.StatusOK, apiRequest.ResponseJson("请求未携带token，无权限访问",nil,false))
+			c.JSON(http.StatusOK, utils.ResponseJson("请求未携带token，无权限访问", nil, false))
 			c.Abort()
 			return
 		}
@@ -26,11 +23,11 @@ func JWTAuth() gin.HandlerFunc {
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
-				c.JSON(http.StatusOK, apiRequest.ResponseJson("授权已过期",nil,false))
+				c.JSON(http.StatusOK, utils.ResponseJson("授权已过期", nil, false))
 				c.Abort()
 				return
 			}
-			c.JSON(http.StatusOK, apiRequest.ResponseJson(err.Error(),nil,false))
+			c.JSON(http.StatusOK, utils.ResponseJson(err.Error(), nil, false))
 			c.Abort()
 			return
 		}
@@ -129,40 +126,39 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	return "", TokenInvalid
 }
 
-
 // 生成令牌
-func GenerateToken(user *db.SysUser) (string,error) {
-	j := &JWT{
-		[]byte("cappuccino?.?token"),
-	}
-	claims := CustomClaims{
-		user.ID,
-		user.LoginName,
-		user.Phone,
-		jwt.StandardClaims{
-			NotBefore: int64(time.Now().Unix() - 1000), // 签名生效时间
-			ExpiresAt: int64(time.Now().Unix() + config.GetAppConfig().Jwt.Expires), // 过期时间 一小时
-			Issuer:    "cappuccino?.?token",                   //签名的发行者
-		},
-	}
-
-	token, err := j.CreateToken(claims)
-
-	if err != nil {
-		return "",errors.New("创建失败")
-	}
-	return token,nil
-
-}
-
-func GetUserInfoByToken(c *gin.Context) *db.SysUser {
-	user := db.SysUser{}
-	claims := c.MustGet("cappuccino").(*CustomClaims)
-	if claims != nil {
-		user.ID = claims.ID
-		user.LoginName = claims.Name
-		user.Phone = claims.Phone
-		return &user
-	}
-	return nil
-}
+//func GenerateToken(user *db.SysUser) (string, error) {
+//	j := &JWT{
+//		[]byte("cappuccino?.?token"),
+//	}
+//	claims := CustomClaims{
+//		user.ID,
+//		user.LoginName,
+//		user.Phone,
+//		jwt.StandardClaims{
+//			NotBefore: int64(time.Now().Unix() - 1000),                              // 签名生效时间
+//			ExpiresAt: int64(time.Now().Unix() + config.GetAppConfig().Jwt.Expires), // 过期时间 一小时
+//			Issuer:    "cappuccino?.?token",                                         //签名的发行者
+//		},
+//	}
+//
+//	token, err := j.CreateToken(claims)
+//
+//	if err != nil {
+//		return "", errors.New("创建失败")
+//	}
+//	return token, nil
+//
+//}
+//
+//func GetUserInfoByToken(c *gin.Context) *db.SysUser {
+//	user := db.SysUser{}
+//	claims := c.MustGet("cappuccino").(*CustomClaims)
+//	if claims != nil {
+//		user.ID = claims.ID
+//		user.LoginName = claims.Name
+//		user.Phone = claims.Phone
+//		return &user
+//	}
+//	return nil
+//}

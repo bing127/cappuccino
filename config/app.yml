@@ -1,0 +1,50 @@
+app:
+  name: Cappuccino官方
+  description: Cappuccino - 可插拔式go后台管理系统
+  version: 0.0.1
+  apiprefix: /cappuccino
+
+db:
+  type: mysql
+  host: 47.105.107.15
+  user: root
+  password: JIUban1207
+  port: 3306
+  schema: cappuccino
+  #  是否打印日志
+  log: true
+
+server:
+  port: 1207
+  readtimeout: 60
+  writetimeout: 60
+
+mail:
+  user: sc_1207@163.com
+  password: wxb1207oneday
+  host: smtp.163.com
+  port: 465
+
+model:
+  type: debug
+
+file:
+  path: /static
+  max: 100
+  suffix:
+    - .jpg
+    - .jpeg
+    - .png
+    - .apk
+  dir: ./static
+
+jwt:
+  expires: 1800    #半个小时
+  secretKey: _?*(wxb)Cappuccino__+?.~/
+
+redis:
+  Host: 127.0.0.1:6379
+  Password:
+  MaxIdle: 30
+  MaxActive: 30
+  IdleTimeout: 200

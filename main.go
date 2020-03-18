@@ -16,16 +16,22 @@ import (
 // @title cappuccino
 // @version latest
 // @BasePath /
-func main()  {
+func main() {
 	service.Init()
 	defer service.Destroy()
 
+	// 禁用控制台颜色
+	//gin.DisableConsoleColor()
+
+	// 创建记录日志的文件
+	//f, _ := os.Create(config.Admin.App.Name + ".log")
+	//gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 	r := gin.Default()
 
 	router.InitRouter(r)
 
 	srv := &http.Server{
-		Addr:    config.GetAppConfig().Server.Port,
+		Addr:    ":" + config.Admin.Server.Port,
 		Handler: r,
 	}
 

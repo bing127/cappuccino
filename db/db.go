@@ -3,45 +3,42 @@ package db
 import (
 	"cappuccino/config"
 	"fmt"
+	"log"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
 )
 
-var GormDb *gorm.DB
-
+var gormDb *gorm.DB
 
 // Open 打开数据库
 func Open() {
-	mysqlConfig := config.GetAppConfig().Database
+	mysqlConfig := config.Admin.Db
 	template := "%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local"
-	connStr := fmt.Sprintf(template, mysqlConfig.Username, mysqlConfig.Password, mysqlConfig.Address, mysqlConfig.Schema)
+	connStr := fmt.Sprintf(template, mysqlConfig.User, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Schema)
 	openDb, err := gorm.Open("mysql", connStr)
 	if err != nil {
 		log.Println(err.Error())
-		panic("数据库连接异常")
+		panic("数据库连接异常:**********************"+mysqlConfig.Host+"**********************")
 	}
 
-	openDb.LogMode(config.GetAppConfig().Database.OpenLog)
-	//全局设置表名不可以为复数形式。
+	openDb.LogMode(true)
 	openDb.SingularTable(true)
+	gormDb = openDb
 
-	GormDb = openDb
-
-	autoMigrate(&SysUser{})
+	//autoMigrate(&Test{},&Dict{},&Value{})
 }
 
 // Close 关闭数据库
 func Close() {
-	_ = GormDb.Close()
-	GormDb = nil
+	_ = gormDb.Close()
+	gormDb = nil
 }
 
 // GetInstance 获取数据库实例
-func getInstance() *gorm.DB {
-	return GormDb
+func GetInstance() *gorm.DB {
+	return gormDb
 }
 
 func autoMigrate(values ...interface{}) {
-	GormDb.AutoMigrate(values...)
+	gormDb.AutoMigrate(values...)
 }

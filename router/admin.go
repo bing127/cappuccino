@@ -1,50 +1,50 @@
 package router
 
 import (
-	"cappuccino/api/admin"
 	"cappuccino/config"
-	"cappuccino/middleware"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 var (
-	adminPostRouter = map[string]gin.HandlerFunc{
-		"/user":    admin.CreateUser,
+	v1PostRouter = map[string]gin.HandlerFunc{
 	}
 
-	adminDeleteRouter = map[string]gin.HandlerFunc{
-		//"/user/:id":  v1.DeleteGate,
+	v1DeleteRouter = map[string]gin.HandlerFunc{
 	}
 
-	adminPutRouter = map[string]gin.HandlerFunc{
-		"/user": 	admin.UpdateUser,
+	v1PutRouter = map[string]gin.HandlerFunc{
 	}
 
-	adminGetRouter = map[string]gin.HandlerFunc{
-		"/challenge":         admin.Challenge,
-		//"/user/:id":                  v1.GetRoom,
+	v1GetRouter = map[string]gin.HandlerFunc{
 	}
 )
 
 func initAdminRouter(r *gin.Engine) {
-	r.Use(middleware.CorsHandler())
-	r.GET(config.GetAppConfig().App.ApiPrefix+"/api/admin", admin.Admin)
-	r.POST(config.GetAppConfig().App.ApiPrefix+"/api/admin/getAccessToken", admin.GetAccessToken)
-	groupAdmin := r.Group(config.GetAppConfig().App.ApiPrefix+"/api/admin", middleware.JWTAuth())
+	// 后台管理系统
+	r.GET(config.Admin.App.ApiPrefix+"/admin", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "index.html", gin.H{
+			"title":config.Admin.App.Name,
+		})
+	})
+	//r.GET(config.Admin.App.ApiPrefix+"/api/v1", v1.V1)
+	//r.POST(config.Admin.App.ApiPrefix+"/api/admin/getAccessToken", v1.GetAccessToken)
 
-	for path, f := range adminGetRouter {
-		groupAdmin.GET(path, f)
+	groupV1 := r.Group(config.Admin.App.ApiPrefix + "/api/v1")
+
+	for path, f := range v1GetRouter {
+		groupV1.GET(path, f)
 	}
 
-	for path, f := range adminPostRouter {
-		groupAdmin.POST(path, f)
+	for path, f := range v1PostRouter {
+		groupV1.POST(path, f)
 	}
 
-	for path, f := range adminDeleteRouter {
-		groupAdmin.DELETE(path, f)
+	for path, f := range v1DeleteRouter {
+		groupV1.DELETE(path, f)
 	}
 
-	for path, f := range adminPutRouter {
-		groupAdmin.PUT(path, f)
+	for path, f := range v1PutRouter {
+		groupV1.PUT(path, f)
 	}
 }
