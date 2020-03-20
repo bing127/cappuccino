@@ -7,5 +7,23 @@
         "version": "latest"
     },
     "basePath": "/",
-    "paths": {}
+    "paths": {
+        "/cappuccino/api/v1": {
+            "get": {
+                "description": "获取平台版本",
+                "tags": [
+                    "获取平台版本"
+                ],
+                "summary": "获取平台版本",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

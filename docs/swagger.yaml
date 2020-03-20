@@ -4,5 +4,16 @@ info:
   license: {}
   title: cappuccino
   version: latest
-paths: {}
+paths:
+  /cappuccino/api/v1:
+    get:
+      description: 获取平台版本
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 获取平台版本
+      tags:
+      - 获取平台版本
 swagger: "2.0"

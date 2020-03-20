@@ -10,7 +10,7 @@ import { VueAxios } from './utils/request'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
-import './mock'
+// import './mock'
 
 import bootstrap from './core/bootstrap'
 import './core/lazy_use'
@@ -30,4 +30,4 @@ new Vue({
   store,
   created: bootstrap,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

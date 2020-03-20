@@ -2,6 +2,7 @@ package router
 
 import (
 	"cappuccino/config"
+	v1 "cappuccino/controller/v1"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -27,7 +28,7 @@ func initAdminRouter(r *gin.Engine) {
 			"title":config.Admin.App.Name,
 		})
 	})
-	//r.GET(config.Admin.App.ApiPrefix+"/api/v1", v1.V1)
+	r.GET(config.Admin.App.ApiPrefix+"/api/v1", v1.V1)
 	//r.POST(config.Admin.App.ApiPrefix+"/api/admin/getAccessToken", v1.GetAccessToken)
 
 	groupV1 := r.Group(config.Admin.App.ApiPrefix + "/api/v1")
