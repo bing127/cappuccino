@@ -2,6 +2,7 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/LyricTian/captcha v1.1.0 h1:/fwwOn0Qv0HqfQPMvVgvgOBMYINuaDr0sSBGylQK5YA=
 github.com/LyricTian/captcha v1.1.0/go.mod h1:/B+rAY8altkYP05+rMShopIisuw+dk2hU3LfX0bT6fY=
+github.com/LyricTian/gin-admin v1.1.0 h1:w8VSMua3UxYNNviSDjNcO28OMzSD5Ujk8vEJt7XVjcM=
 github.com/LyricTian/queue v1.2.0 h1:OaEiS5D5dQOMFyvvrq11o0uJdAMXDf5nRJggVDFEonY=
 github.com/LyricTian/queue v1.2.0/go.mod h1:CMJcrjcVYLOqN2FnVpXqYJzITcDJNdlq7VLkPXyhduw=
 github.com/PuerkitoBio/purell v1.1.0 h1:rmGxhojJlM0tuKtfdvliR84CFHljx9ag64t2xmVkjK4=

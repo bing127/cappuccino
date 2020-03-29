@@ -2,27 +2,51 @@ package v1
 
 import (
 	"cappuccino/config"
-	"cappuccino/utils"
+	"cappuccino/errors"
+	"cappuccino/ginplus"
 	"github.com/LyricTian/captcha"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-// GetCaptcha 获取图形验证码信息
-func GetCaptcha(ctx *gin.Context) {
+
+// GetCaptcha 获取验证码信息
+// @Tags 登录管理
+// @Summary 获取验证码信息
+// @Success 200 {string} string
+// @Router /api/v1/login/captchaId [get]
+func GetCaptchaId(c *gin.Context) {
 	captchaID := captcha.NewLen(config.Admin.Captcha.Length)
 	result := make(map[string]interface{})
+	result["captchaID"] = captchaID
+	ginplus.ResSuccess(c, result)
+}
 
-	err := captcha.WriteImage(ctx.Writer, captchaID, config.Admin.Captcha.Width, config.Admin.Captcha.Height)
+// ResCaptcha 响应图形验证码
+// @Tags 登录管理
+// @Summary 响应图形验证码
+// @Param id query string true "验证码ID"
+// @Produce image/png
+// @Success 200 "图形验证码"
+// @Failure 400 {object} schema.HTTPError "{error:{code:0,message:无效的请求参数}}"
+// @Failure 500 {object} schema.HTTPError "{error:{code:0,message:服务器错误}}"
+// @Router /api/v1/login/captcha [get]
+func ResCaptcha(c *gin.Context) {
+	captchaID := c.Query("id")
+	if captchaID == "" {
+		ginplus.ResError(c, errors.New400Response("请提供验证码ID"))
+		return
+	}
+	err := captcha.WriteImage(c.Writer, captchaID, config.Admin.Captcha.Width, config.Admin.Captcha.Height)
 	if err != nil {
 		if err == captcha.ErrNotFound {
-			result["captcha"] = ""
+			ginplus.ResError(c, errors.ErrNotFound)
+			return
 		}
-		result["captcha"] = ""
+		ginplus.ResError(c, errors.WithStack(err))
+		return
 	}
-	ctx.Writer.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	ctx.Writer.Header().Set("Pragma", "no-cache")
-	ctx.Writer.Header().Set("Expires", "0")
-	ctx.Writer.Header().Set("Content-Type", "image/png")
-	ctx.JSON(http.StatusOK,utils.ResponseJson("请求成功",result,true,""))
+	c.Writer.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	c.Writer.Header().Set("Pragma", "no-cache")
+	c.Writer.Header().Set("Expires", "0")
+	c.Writer.Header().Set("Content-Type", "image/png")
 }

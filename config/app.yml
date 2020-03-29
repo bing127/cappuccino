@@ -62,6 +62,8 @@ captcha:
   width: 300
   # 图片高度
   height: 120
+  # 存储方式
+  store: redis
   # redis数据库(如果存储方式是redis，则指定存储的数据库)
   redisdb: 10
   # 存储到redis数据库中的键名前缀
