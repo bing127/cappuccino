@@ -18,6 +18,8 @@ server:
   port: 1207
   readtimeout: 60
   writetimeout: 60
+  # 运行模式(debug:调试,test:测试,release:正式)
+  runmode: debug
 
 mail:
   user: sc_1207@163.com
@@ -40,11 +42,27 @@ file:
 
 jwt:
   expires: 1800    #半个小时
-  secretKey: _?*(wxb)Cappuccino__+?.~/
+  secretkey: _?*(wxb)Cappuccino__+?.~/
+  redisdb: 10
+  redisprefix: auth_
 
 redis:
-  Host: 127.0.0.1:6379
-  Password:
-  MaxIdle: 30
-  MaxActive: 30
-  IdleTimeout: 200
+  host: 47.105.107.15:6379
+  password: 123456
+  maxidle: 30
+  maxactive: 30
+  idletimeout: 200
+
+
+# 图形验证码
+captcha:
+  # 数字长度
+  length: 4
+  # 图片宽度
+  width: 300
+  # 图片高度
+  height: 120
+  # redis数据库(如果存储方式是redis，则指定存储的数据库)
+  redisdb: 10
+  # 存储到redis数据库中的键名前缀
+  redisprefix: captcha_

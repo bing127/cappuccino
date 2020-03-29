@@ -15,5 +15,5 @@ import (
 func V1(c *gin.Context) {
 	result := make(map[string]interface{})
 	result["date"] = utils.GetCurrentTimeStamp()
-	c.JSON(http.StatusOK,utils.ResponseJson("请求成功",result,true,nil))
+	c.JSON(http.StatusOK,utils.ResponseJson("请求成功",result,true,""))
 }

@@ -17,6 +17,7 @@ var Admin = struct {
 		Port         string
 		ReadTimeout  time.Duration
 		WriteTimeout time.Duration
+		RunMode      string
 	}
 	Db struct {
 		Type     string
@@ -34,7 +35,8 @@ var Admin = struct {
 		Port     string
 	}
 	Mode struct {
-		Type string
+		Type      string
+		SecretKey string
 	}
 	File struct {
 		Path   string
@@ -43,7 +45,22 @@ var Admin = struct {
 		Suffix []string
 	}
 	Jwt struct {
-		Expires int
+		Expires     int
+		SecretKey   string
+		RedisDb     int
+		RedisPrefix string
+	}
+	Redis struct {
+		Host     string
+		Password string
+	}
+	Captcha struct {
+		Store       string
+		Length      int
+		Width       int
+		Height      int
+		RedisDB     int
+		RedisPrefix string
 	}
 }{}
 

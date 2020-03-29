@@ -20,12 +20,15 @@ func main() {
 	service.Init()
 	defer service.Destroy()
 
+	// 初始化图形验证码
+	service.InitCaptcha()
 	// 禁用控制台颜色
 	//gin.DisableConsoleColor()
 
 	// 创建记录日志的文件
 	//f, _ := os.Create(config.Admin.App.Name + ".log")
 	//gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	gin.SetMode(config.Admin.Server.RunMode)
 	r := gin.Default()
 
 	router.InitRouter(r)

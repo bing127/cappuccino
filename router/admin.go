@@ -29,6 +29,7 @@ func initAdminRouter(r *gin.Engine) {
 		})
 	})
 	r.GET(config.Admin.App.ApiPrefix+"/api/v1", v1.V1)
+	r.GET(config.Admin.App.ApiPrefix+"/api/v1/captcha",v1.GetCaptcha)
 	//r.POST(config.Admin.App.ApiPrefix+"/api/admin/getAccessToken", v1.GetAccessToken)
 
 	groupV1 := r.Group(config.Admin.App.ApiPrefix + "/api/v1")
