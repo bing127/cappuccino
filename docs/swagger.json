@@ -8,6 +8,23 @@
     },
     "basePath": "/",
     "paths": {
+        "/api/v1": {
+            "get": {
+                "description": "获取平台版本",
+                "tags": [
+                    "获取平台版本"
+                ],
+                "summary": "获取平台版本",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "tags": [
@@ -90,23 +107,6 @@
                     "登录管理"
                 ],
                 "summary": "获取验证码信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/cappuccino/api/v1": {
-            "get": {
-                "description": "获取平台版本",
-                "tags": [
-                    "获取平台版本"
-                ],
-                "summary": "获取平台版本",
                 "responses": {
                     "200": {
                         "description": "OK",

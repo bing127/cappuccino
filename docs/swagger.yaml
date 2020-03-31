@@ -54,6 +54,17 @@ info:
   title: cappuccino
   version: latest
 paths:
+  /api/v1:
+    get:
+      description: 获取平台版本
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 获取平台版本
+      tags:
+      - 获取平台版本
   /api/v1/login:
     post:
       parameters:
@@ -113,15 +124,4 @@ paths:
       summary: 获取验证码信息
       tags:
       - 登录管理
-  /cappuccino/api/v1:
-    get:
-      description: 获取平台版本
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: 获取平台版本
-      tags:
-      - 获取平台版本
 swagger: "2.0"

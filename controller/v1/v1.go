@@ -11,7 +11,7 @@ import (
 // @Description 获取平台版本
 // @Tags 获取平台版本
 // @Success 200 {string} string
-// @Router /cappuccino/api/v1 [get]
+// @Router /api/v1 [get]
 func V1(c *gin.Context) {
 	result := make(map[string]interface{})
 	result["date"] = utils.GetCurrentTimeStamp()

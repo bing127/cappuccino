@@ -30,3 +30,4 @@ type SysUserRole struct {
 func (a SysUserRole) TableName() string {
 	return a.Model.TableName("sys_user_role")
 }
+

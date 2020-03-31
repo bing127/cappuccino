@@ -4,8 +4,10 @@ import (
 	"cappuccino/controller/schema"
 	"cappuccino/errors"
 	"cappuccino/ginplus"
+	"cappuccino/service"
 	"github.com/LyricTian/captcha"
 	"github.com/gin-gonic/gin"
+
 )
 
 // Login 用户登录
@@ -27,11 +29,11 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	//user, err := a.LoginBll.Verify(ginplus.NewContext(c), item.UserName, item.Password)
-	//if err != nil {
-	//	ginplus.ResError(c, err)
-	//	return
-	//}
+	_,userErr := service.Verify(c,item.UserName,item.Password)
+	if userErr != nil {
+		ginplus.ResError(c, errors.New400Response(userErr.Error()))
+		return
+	}
 	//
 	//userID := user.RecordID
 	//// 将用户ID放入上下文

@@ -1,5 +1,10 @@
 package schema
 
+// LoginCaptcha 登录验证码
+type LoginCaptcha struct {
+	CaptchaID string `json:"captcha_id"` // 验证码ID
+}
+
 // LoginParam 登录参数
 type LoginParam struct {
 	UserName    string `json:"user_name" binding:"required"`    // 用户名
