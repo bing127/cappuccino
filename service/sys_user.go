@@ -2,15 +2,13 @@ package service
 
 import (
 	"cappuccino/db"
-	"fmt"
-	"github.com/jinzhu/gorm"
 	"errors"
+	"github.com/jinzhu/gorm"
 )
 
-func SysUserIsExistByParams(key,value string) (*db.SysUser,error) {
-	keyStr := fmt.Sprintf("%s=?",key)
+func SysUserIsExistByParams(params map[string]interface{}) (*db.SysUser,error) {
 	user := db.SysUser{}
-	err := db.GetInstance().Where(keyStr,value).Find(&user).Error
+	err := db.GetInstance().Where(params).Find(&user).Error
 	if err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			return nil,errors.New("未找到符合条件信息")

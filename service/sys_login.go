@@ -2,13 +2,21 @@ package service
 
 import (
 	"cappuccino/db"
+	"cappuccino/errors"
 	"github.com/gin-gonic/gin"
 )
 
 func Verify(ctx *gin.Context, userName, password string) (*db.SysUser, error) {
-	user,err := SysUserIsExistByParams("user_name",userName)
+	params := make(map[string]interface{})
+	params["user_name"] = userName
+	user,err := SysUserIsExistByParams(params)
 	if err!= nil {
-		return nil,err
+		return nil,errors.New("用户不存在")
+	}
+	params["password"] = password
+	user,err = SysUserIsExistByParams(params)
+	if err!= nil {
+		return nil,errors.New("密码错误")
 	}
 	return user,nil
 }
