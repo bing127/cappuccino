@@ -3,9 +3,9 @@ package db
 import (
 	"cappuccino/config"
 	"fmt"
+	"github.com/happierall/l"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
 	"time"
 )
 
@@ -31,7 +31,7 @@ func Open() {
 	connStr := fmt.Sprintf(template, mysqlConfig.User, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Schema)
 	openDb, err := gorm.Open("mysql", connStr)
 	if err != nil {
-		log.Println(err.Error())
+		l.Error("数据库连接异常:**********************" + mysqlConfig.Host + "**********************")
 		panic("数据库连接异常:**********************" + mysqlConfig.Host + "**********************")
 	}
 
@@ -40,6 +40,7 @@ func Open() {
 	gormDb = openDb
 
 	autoMigrate(&SysUser{}, &SysUserRole{}, &SysRole{}, &SysRoleMenu{}, &SysMenu{}, &SysMenuAction{}, &SysMenuResource{})
+	l.Warn("mysql 初始化成功")
 }
 
 // Close 关闭数据库

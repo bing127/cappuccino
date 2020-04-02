@@ -45,7 +45,7 @@ var Admin = struct {
 		Suffix []string
 	}
 	Jwt struct {
-		Expires     int
+		Expires     int64
 		SecretKey   string
 		RedisDb     int
 		RedisPrefix string

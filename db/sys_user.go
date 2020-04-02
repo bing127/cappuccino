@@ -12,24 +12,14 @@ type SysUser struct {
 	Phone      *string    `gorm:"column:phone;size:20;index;"`          // 手机号
 	Status     *int       `gorm:"column:status;index;"`                 // 状态(1:启用 2:停用)
 	CreateBy   *string    `gorm:"column:create_by;size:64;"`            // 创建者
-	CreateDate *string    `gorm:"column:create_date;size:64;"`          // 创建时间
-	UpdateBy   *time.Time `gorm:"column:update_by;"`                    // 更新者
+	CreateDate *time.Time    `gorm:"column:create_date;size:64;"`          // 创建时间
+	UpdateBy   *string `gorm:"column:update_by;"`                    // 更新者
 	UpdateDate *time.Time `gorm:"column:update_date;"`                  // 更新时间
-}
-
-// TableName 表名
-func (a SysUser) TableName() string {
-	return a.Model.TableName("sys_user")
 }
 
 // UserRole 用户角色关联实体
 type SysUserRole struct {
 	UserID string `gorm:"column:user_id;size:36;index;"` // 用户内码
 	RoleID string `gorm:"column:role_id;size:36;index;"` // 角色内码
-	Model
 }
 
-// TableName 表名
-func (a SysUserRole) TableName() string {
-	return a.Model.TableName("sys_user_role")
-}

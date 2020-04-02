@@ -4,10 +4,11 @@ import (
 	"cappuccino/controller/schema"
 	"cappuccino/errors"
 	"cappuccino/ginplus"
+	"cappuccino/middleware"
+	"cappuccino/pkg"
 	"cappuccino/service"
 	"github.com/LyricTian/captcha"
 	"github.com/gin-gonic/gin"
-
 )
 
 // Login 用户登录
@@ -29,22 +30,19 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	_,userErr := service.Verify(c,item.UserName,item.Password)
+	user,userErr := service.Verify(c,item.UserName,item.Password)
 	if userErr != nil {
 		ginplus.ResError(c, errors.New400Response(userErr.Error()))
 		return
 	}
-	//
-	//userID := user.RecordID
-	//// 将用户ID放入上下文
-	//ginplus.SetUserID(c, userID)
-	//
-	//tokenInfo, err := a.LoginBll.GenerateToken(ginplus.NewContext(c), userID)
-	//if err != nil {
-	//	ginplus.ResError(c, err)
-	//	return
-	//}
-	//
-	//logger.StartSpan(ginplus.NewContext(c), logger.SetSpanTitle("用户登录"), logger.SetSpanFuncName("Login")).Infof("登入系统")
-	ginplus.ResSuccess(c, nil)
+	// 将用户ID放入上下文
+	ginplus.SetUserID(c, user.ID)
+
+	tokenInfo, err := middleware.GenerateToken(user)
+	if err != nil {
+		ginplus.ResError(c, err)
+		return
+	}
+	pkg.GetRedisInstance().Set("userToken",tokenInfo,0)
+	ginplus.ResSuccess(c, tokenInfo)
 }

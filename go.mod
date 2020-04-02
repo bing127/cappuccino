@@ -13,6 +13,7 @@ require (
 	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/go-redis/redis_rate v6.5.0+incompatible // indirect
 	github.com/golang/protobuf v1.3.5 // indirect
+	github.com/happierall/l v0.0.0-20190729144513-5eb32176fb02
 	github.com/jinzhu/configor v1.1.1
 	github.com/jinzhu/gorm v1.9.12
 	github.com/json-iterator/go v1.1.9

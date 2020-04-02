@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"crypto/hmac"
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/hex"
@@ -12,10 +11,10 @@ import (
 	"time"
 )
 
-func Hmac(key string, data string) string {
-	hmacHash := hmac.New(md5.New, []byte(key))
-	hmacHash.Write([]byte(data))
-	return hex.EncodeToString(hmacHash.Sum([]byte("")))
+func Hmac(data string) string {
+	h := md5.New()
+	h.Write([]byte(data))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func IsStringEmpty(str string) bool {

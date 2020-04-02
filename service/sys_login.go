@@ -3,6 +3,7 @@ package service
 import (
 	"cappuccino/db"
 	"cappuccino/errors"
+	"cappuccino/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +14,7 @@ func Verify(ctx *gin.Context, userName, password string) (*db.SysUser, error) {
 	if err!= nil {
 		return nil,errors.New("用户不存在")
 	}
-	params["password"] = password
+	params["password"] = utils.Hmac(password)
 	user,err = SysUserIsExistByParams(params)
 	if err!= nil {
 		return nil,errors.New("密码错误")

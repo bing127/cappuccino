@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"cappuccino/config"
+	"cappuccino/db"
 	"cappuccino/utils"
 	"errors"
 	"net/http"
@@ -127,38 +129,38 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 }
 
 // 生成令牌
-//func GenerateToken(user *db.SysUser) (string, error) {
-//	j := &JWT{
-//		[]byte("cappuccino?.?token"),
-//	}
-//	claims := CustomClaims{
-//		user.ID,
-//		user.LoginName,
-//		user.Phone,
-//		jwt.StandardClaims{
-//			NotBefore: int64(time.Now().Unix() - 1000),                              // 签名生效时间
-//			ExpiresAt: int64(time.Now().Unix() + config.GetAppConfig().Jwt.Expires), // 过期时间 一小时
-//			Issuer:    "cappuccino?.?token",                                         //签名的发行者
-//		},
-//	}
-//
-//	token, err := j.CreateToken(claims)
-//
-//	if err != nil {
-//		return "", errors.New("创建失败")
-//	}
-//	return token, nil
-//
-//}
-//
-//func GetUserInfoByToken(c *gin.Context) *db.SysUser {
-//	user := db.SysUser{}
-//	claims := c.MustGet("cappuccino").(*CustomClaims)
-//	if claims != nil {
-//		user.ID = claims.ID
-//		user.LoginName = claims.Name
-//		user.Phone = claims.Phone
-//		return &user
-//	}
-//	return nil
-//}
+func GenerateToken(user *db.SysUser) (string, error) {
+	j := &JWT{
+		[]byte("cappuccino?.?token"),
+	}
+	claims := CustomClaims{
+		user.ID,
+		*user.UserName,
+		*user.Phone,
+		jwt.StandardClaims{
+			NotBefore: int64(time.Now().Unix() - 1000),                              // 签名生效时间
+			ExpiresAt: int64(time.Now().Unix() + config.Admin.Jwt.Expires), // 过期时间 一小时
+			Issuer:    "cappuccino?.?token",                                         //签名的发行者
+		},
+	}
+
+	token, err := j.CreateToken(claims)
+
+	if err != nil {
+		return "", errors.New("创建失败")
+	}
+	return token, nil
+
+}
+
+func GetUserInfoByToken(c *gin.Context) *db.SysUser {
+	user := db.SysUser{}
+	claims := c.MustGet("cappuccino").(*CustomClaims)
+	if claims != nil {
+		user.ID = claims.ID
+		user.UserName = &claims.Name
+		user.Phone = &claims.Phone
+		return &user
+	}
+	return nil
+}
