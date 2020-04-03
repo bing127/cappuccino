@@ -38,11 +38,14 @@ func Login(c *gin.Context) {
 	// 将用户ID放入上下文
 	ginplus.SetUserID(c, user.ID)
 
-	tokenInfo, err := middleware.GenerateToken(user)
+	tokenInfo, err := middleware.GenerateToken(*user)
 	if err != nil {
 		ginplus.ResError(c, err)
 		return
 	}
-	pkg.GetRedisInstance().Set("userToken",tokenInfo,0)
-	ginplus.ResSuccess(c, tokenInfo)
+	userInfo := make(map[string]interface{})
+	userInfo["token"] = tokenInfo
+	userInfo["data"] = user
+	pkg.GetRedisInstance().Set("userToken_"+string(user.ID),tokenInfo,0)
+	ginplus.ResSuccess(c, userInfo)
 }

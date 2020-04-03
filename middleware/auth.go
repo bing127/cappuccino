@@ -128,15 +128,14 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	return "", TokenInvalid
 }
 
+
 // 生成令牌
-func GenerateToken(user *db.SysUser) (string, error) {
-	j := &JWT{
-		[]byte("cappuccino?.?token"),
-	}
+func GenerateToken(user db.SysUser) (string, error) {
+	j := NewJWT()
 	claims := CustomClaims{
 		user.ID,
-		*user.UserName,
-		*user.Phone,
+		user.UserName,
+		user.Phone,
 		jwt.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000),                              // 签名生效时间
 			ExpiresAt: int64(time.Now().Unix() + config.Admin.Jwt.Expires), // 过期时间 一小时
@@ -158,8 +157,8 @@ func GetUserInfoByToken(c *gin.Context) *db.SysUser {
 	claims := c.MustGet("cappuccino").(*CustomClaims)
 	if claims != nil {
 		user.ID = claims.ID
-		user.UserName = &claims.Name
-		user.Phone = &claims.Phone
+		user.UserName = claims.Name
+		user.Phone = claims.Phone
 		return &user
 	}
 	return nil
