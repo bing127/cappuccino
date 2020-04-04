@@ -1,0 +1,1 @@
+-c ./configs/config.toml -m ./configs/model.conf -swagger ./docs/swagger
