@@ -1,6 +1,7 @@
 package ctl
 
 import (
+	"fmt"
 	"github.com/LyricTian/captcha"
 	"cappuccino/internal/app/bll"
 	"cappuccino/internal/app/config"
@@ -34,7 +35,10 @@ func (a *Login) GetCaptcha(c *gin.Context) {
 		ginplus.ResError(c, err)
 		return
 	}
-	ginplus.ResSuccess(c, item)
+	params := make(map[string]interface{})
+	params["captcha"] = item
+	params["ip"] = fmt.Sprintf(":%d/api/v1/pub/login",config.Global().HTTP.Port)
+	ginplus.ResSuccess(c, params)
 }
 
 // ResCaptcha 响应图形验证码
@@ -83,10 +87,10 @@ func (a *Login) Login(c *gin.Context) {
 		return
 	}
 
-	//if !captcha.VerifyString(item.CaptchaID, item.CaptchaCode) {
-	//	ginplus.ResError(c, errors.New400Response("无效的验证码"))
-	//	return
-	//}
+	if !captcha.VerifyString(item.CaptchaID, item.CaptchaCode) {
+		ginplus.ResError(c, errors.New400Response("无效的验证码"))
+		return
+	}
 
 	user, err := a.LoginBll.Verify(ginplus.NewContext(c), item.UserName, item.Password)
 	if err != nil {
